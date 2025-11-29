@@ -33,9 +33,33 @@ body{
 }
 @keyframes rise{to{opacity:1;transform:translateY(0);}}
 
+/* Title */
+h1{
+ font-size:2.2rem;
+ letter-spacing:0.28rem;
+ margin-bottom:6px;
+}
+
+/* Subtitle */
+.subtitle{
+ font-size:0.85rem;
+ opacity:0.55;
+ letter-spacing:0.22rem;
+ margin-bottom:18px;
+ text-transform:uppercase;
+}
+
+/* Codewords */
+.codewords{
+ color:#ff1433;
+ font-size:0.85rem;
+ letter-spacing:0.28rem;
+ margin-bottom:22px;
+}
+
 /* Callsign box */
 .input-box{
- margin-top:25px;
+ margin-top:10px;
 }
 .input-box input{
  padding:12px 16px;
@@ -73,6 +97,15 @@ body{
  animation:redPulse 2s infinite ease-in-out;
 }
 
+/* Saved Callsign */
+.saved{
+ color:#ff1433;
+ font-size:1rem;
+ letter-spacing:0.2rem;
+ margin-top:18px;
+ display:none;
+}
+
 /* Back button */
 .back-btn{
  margin-top:30px;
@@ -90,10 +123,11 @@ body{
 <div class="beam"></div>
 
 <div class="container">
-    <h1>THE CHAMBER</h1>
-    <div style="margin-top:12px; font-size:0.9rem; opacity:0.7;">
-        Enter your CALLSIGN
-    </div>
+    <h1>YOU ARE INSIDE</h1>
+    <div class="subtitle">LOWCAST // THE CHAMBER</div>
+    <div class="codewords">HEAVY · BASS · REAL</div>
+
+    <div class="saved" id="savedCallsign"></div>
 
     <div class="input-box">
         <input type="text" id="callsignInput" placeholder="Your signal name">
@@ -110,12 +144,27 @@ body{
 const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
 
 // ----------------------------------------------------
+// LOAD SAVED CALLSIGN IF EXISTS
+// ----------------------------------------------------
+const saved = localStorage.getItem("lowcast.callsign");
+const savedBox = document.getElementById("savedCallsign");
+
+if (saved) {
+    savedBox.textContent = saved;
+    savedBox.style.display = "block";
+    document.getElementById("callsignInput").placeholder = saved;
+}
+
+// ----------------------------------------------------
 // SUBMIT CALLSIGN → Send to Google Sheets
 // ----------------------------------------------------
 document.getElementById("submitCallsign").addEventListener("click", () => {
-    const callsign = document.getElementById("callsignInput").value.trim();
-    if(!callsign){ return; }
+    const raw = document.getElementById("callsignInput").value.trim();
+    if(!raw){ return; }
 
+    const callsign = raw.toUpperCase();
+
+    // send to sheet
     fetch(API_URL, {
         method: "POST",
         mode: "no-cors",
@@ -127,6 +176,13 @@ document.getElementById("submitCallsign").addEventListener("click", () => {
             gate: "Chamber"
         })
     });
+
+    // save locally
+    localStorage.setItem("lowcast.callsign", callsign);
+
+    // update display
+    savedBox.textContent = callsign;
+    savedBox.style.display = "block";
 
     document.getElementById("successPulse").style.display = "block";
 });
