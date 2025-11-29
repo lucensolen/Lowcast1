@@ -135,7 +135,11 @@ body{
 </div>
 
 <script>
-// ------------------ RESTORE LOCKED STATE ------------------
+const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
+
+// ----------------------------------------------------
+// RESTORE LOCKED STATE
+// ----------------------------------------------------
 const notifBtn = document.getElementById("openSignup");
 
 if (localStorage.getItem("lowcast.notified") === "true") {
@@ -143,8 +147,25 @@ if (localStorage.getItem("lowcast.notified") === "true") {
     notifBtn.classList.add("locked");
 }
 
-// ------------------ SUBMISSION HANDLER ------------------
+// ----------------------------------------------------
+// SUBMIT SIGNUP → send to Google Sheets
+// ----------------------------------------------------
 document.getElementById("submitSignup").addEventListener("click", () => {
+    const email = document.getElementById("emailInput").value.trim();
+    const phone = document.getElementById("phoneInput").value.trim();
+
+    fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: email,
+            phone: phone,
+            callsign: "",
+            gate: "Gate 0.2"
+        })
+    });
+
     localStorage.setItem("lowcast.notified", "true");
 
     document.getElementById("signupFields").style.display = "none";
@@ -156,16 +177,16 @@ document.getElementById("submitSignup").addEventListener("click", () => {
     notifBtn.classList.add("locked");
 });
 
-// ------------------ ENTER DIRECT ------------------
+// ----------------------------------------------------
 document.getElementById("enterDirect").addEventListener("click", () => {
     window.location.href = "chamber.html";
 });
 
-// ------------------ OPEN/CLOSE OVERLAY ------------------
+// ----------------------------------------------------
 openSignup.addEventListener("click",()=>{overlay.style.display="flex";});
 closeOverlay.addEventListener("click",()=>{overlay.style.display="none";});
 
-// ------------------ COUNTDOWN ------------------
+// ----------------------------------------------------
 const launchDate=new Date("2025-12-30T22:00:00").getTime();
 function updateCountdown(){
  const now=new Date().getTime();
@@ -179,7 +200,6 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);
 
-// ------------------ ACCESS BUTTON ------------------
 accessBtn.addEventListener("click",()=>{window.location.href="chamber.html";});
 </script>
 
