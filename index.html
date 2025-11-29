@@ -50,12 +50,28 @@
 <button class="tune-btn" id="tuneBtn">TUNE IN</button>
 
 <script>
+// --------------------------------------------------------
+// NEW: Skip Gate 0.1 if user already passed it
+// --------------------------------------------------------
+if (localStorage.getItem("lowcast.stage") === "0.2" ||
+    localStorage.getItem("lowcast.stage") === "0.3" ||
+    localStorage.getItem("lowcast.stage") === "chamber") {
+        window.location.href = "gate2.html";
+}
+
+// --------------------------------------------------------
+// ORIGINAL ANIMATIONS (unchanged)
+// --------------------------------------------------------
 setTimeout(()=>{beam.style.opacity=1;},500);
 setTimeout(()=>{msg1.style.opacity=1;},1500);
 setTimeout(()=>{msg2.style.opacity=1;},3500);
 setTimeout(()=>{tuneBtn.style.opacity=1;},5500);
 
+// --------------------------------------------------------
+// UPDATED TUNE-IN LOGIC (same visual, new saved state)
+// --------------------------------------------------------
 tuneBtn.addEventListener("click", ()=>{
+    localStorage.setItem("lowcast.stage", "0.1");
     window.location.href="gate2.html";
 });
 </script>
