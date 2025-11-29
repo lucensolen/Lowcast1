@@ -14,6 +14,21 @@ body{
 }
 @keyframes fadeIn{to{opacity:1;}}
 
+/* --- RED CORE PULSE RESTORED FROM OLD CHAMBER --- */
+.core{
+ position:absolute;
+ width:260px;height:260px;
+ background:radial-gradient(circle,rgba(255,20,51,0.4)0%,transparent 60%);
+ filter:blur(8px);
+ animation:pulse 4s ease-in-out infinite;
+ opacity:0.7;
+}
+@keyframes pulse{
+ 0%{transform:scale(0.9);opacity:0.5;}
+ 50%{transform:scale(1.1);opacity:0.9;}
+ 100%{transform:scale(0.9);opacity:0.5;}
+}
+
 .beam{
  position:absolute;width:2px;height:80vh;
  background:linear-gradient(transparent,rgba(255,255,255,0.7),transparent);
@@ -23,7 +38,7 @@ body{
 
 .container{
  text-align:center;
- z-index:1;
+ z-index:5;
  position:relative;
  letter-spacing:3px;
  opacity:0;
@@ -33,23 +48,32 @@ body{
 }
 @keyframes rise{to{opacity:1;transform:translateY(0);}}
 
-/* Title */
+/* TITLE — restored brightness + weight */
 h1{
- font-size:2.2rem;
- letter-spacing:0.28rem;
- margin-bottom:6px;
+ font-size:2.4rem;
+ letter-spacing:0.30rem;
+ margin-bottom:8px;
+ color:#f5f5f5;
 }
 
-/* Subtitle */
+/* SUBHEADERS — restored style from original */
 .subtitle{
  font-size:0.85rem;
  opacity:0.55;
  letter-spacing:0.22rem;
- margin-bottom:18px;
+ margin-bottom:10px;
  text-transform:uppercase;
 }
 
-/* Codewords */
+.subline{
+ font-size:0.80rem;
+ opacity:0.45;
+ letter-spacing:0.20rem;
+ margin-bottom:15px;
+ text-transform:uppercase;
+}
+
+/* Codewords stay from the new version */
 .codewords{
  color:#ff1433;
  font-size:0.85rem;
@@ -71,18 +95,19 @@ h1{
  letter-spacing:2px;
  text-align:center;
 }
+
 .submit-btn{
  margin-top:20px;
  padding:12px 32px;
  background:transparent;
  border:1px solid #fff;
  color:#fff;
- letter-spacing:2px;
+ letter-spacing:0.25rem; /* ENTER spacing */
  cursor:pointer;
 }
 .submit-btn:hover{background:rgba(255,255,255,0.12);}
 
-/* Success Pulse */
+/* SUCCESS PULSE */
 @keyframes redPulse {
     0% { opacity: 0.4; }
     50% { opacity: 1; }
@@ -100,8 +125,8 @@ h1{
 /* Saved Callsign */
 .saved{
  color:#ff1433;
- font-size:1rem;
- letter-spacing:0.2rem;
+ font-size:1.2rem;
+ letter-spacing:0.25rem;
  margin-top:18px;
  display:none;
 }
@@ -120,20 +145,29 @@ h1{
 
 <body>
 
+<!-- RED PULSE CORE -->
+<div class="core"></div>
+
 <div class="beam"></div>
 
 <div class="container">
+
     <h1>YOU ARE INSIDE</h1>
-    <div class="subtitle">LOWCAST // THE CHAMBER</div>
+
+    <div class="subtitle">LOWCAST // CHAMBER 0.3</div>
+    <div class="subline">CYCLE 001</div>
+
     <div class="codewords">HEAVY · BASS · REAL</div>
 
+    <!-- Saved callsign -->
     <div class="saved" id="savedCallsign"></div>
 
-    <div class="input-box">
+    <!-- Input -->
+    <div class="input-box" id="inputBox">
         <input type="text" id="callsignInput" placeholder="Your signal name">
     </div>
 
-    <button class="submit-btn" id="submitCallsign">TRANSMIT</button>
+    <button class="submit-btn" id="submitCallsign">E N T E R</button>
 
     <div class="success" id="successPulse">SIGNAL RECEIVED</div>
 
@@ -143,28 +177,25 @@ h1{
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
 
-// ----------------------------------------------------
 // LOAD SAVED CALLSIGN IF EXISTS
-// ----------------------------------------------------
 const saved = localStorage.getItem("lowcast.callsign");
 const savedBox = document.getElementById("savedCallsign");
+const inputBox = document.getElementById("inputBox");
 
 if (saved) {
     savedBox.textContent = saved;
     savedBox.style.display = "block";
-    document.getElementById("callsignInput").placeholder = saved;
+    inputBox.style.display = "none";
+    document.getElementById("submitCallsign").style.display = "none";
 }
 
-// ----------------------------------------------------
-// SUBMIT CALLSIGN → Send to Google Sheets
-// ----------------------------------------------------
+// SUBMIT CALLSIGN
 document.getElementById("submitCallsign").addEventListener("click", () => {
     const raw = document.getElementById("callsignInput").value.trim();
     if(!raw){ return; }
 
     const callsign = raw.toUpperCase();
 
-    // send to sheet
     fetch(API_URL, {
         method: "POST",
         mode: "no-cors",
@@ -177,19 +208,18 @@ document.getElementById("submitCallsign").addEventListener("click", () => {
         })
     });
 
-    // save locally
     localStorage.setItem("lowcast.callsign", callsign);
 
-    // update display
     savedBox.textContent = callsign;
     savedBox.style.display = "block";
+
+    inputBox.style.display = "none";
+    document.getElementById("submitCallsign").style.display = "none";
 
     document.getElementById("successPulse").style.display = "block";
 });
 
-// ----------------------------------------------------
 // BACK
-// ----------------------------------------------------
 document.getElementById("backHome").addEventListener("click", () => {
     window.location.href = "gate2.html";
 });
