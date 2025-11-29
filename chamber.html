@@ -138,8 +138,6 @@ h1{
 }
 .back-btn:hover{opacity:1;}
 
-
-
 /* ---------------------------------------- */
 /* LOWCAST SEAL LOADER OVERLAY (NEW PART)  */
 /* ---------------------------------------- */
@@ -209,8 +207,6 @@ h1{
  </div>
 </div>
 
-
-
 <!-- YOUR ORIGINAL CHAMBER BELOW (unchanged) -->
 
 <div class="core"></div>
@@ -248,10 +244,17 @@ setTimeout(()=>{
 
 
 /* -------------------------- */
-/* YOUR ORIGINAL JS BELOW     */
+/* LOWCAST DB + ID WIRING    */
 /* -------------------------- */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
+
+// unified LOWCAST id (same as gate)
+let LOWCAST_ID = localStorage.getItem("lowcast.id");
+if (!LOWCAST_ID) {
+    LOWCAST_ID = "lowcast_" + Math.random().toString(36).substring(2) + Date.now();
+    localStorage.setItem("lowcast.id", LOWCAST_ID);
+}
 
 // LOAD SAVED CALLSIGN IF EXISTS
 const saved = localStorage.getItem("lowcast.callsign");
@@ -277,9 +280,13 @@ document.getElementById("submitCallsign").addEventListener("click", () => {
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+            id: LOWCAST_ID,
             email: "",
             phone: "",
-            callsign: callsign,
+            callsign: callsign,      // keep original field
+            name: callsign,          // extra field for capacity/name list
+            mix: "",
+            note: "",
             gate: "Chamber"
         })
     });
