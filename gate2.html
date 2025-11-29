@@ -6,6 +6,7 @@
 <title>LOWCAST // Gate 0.2</title>
 
 <style>
+
 body{
  margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
  display:flex;justify-content:center;align-items:center;height:100vh;
@@ -19,7 +20,12 @@ body{
  opacity:1;
 }
 
-.container{text-align:center;z-index:10;letter-spacing:2px;}
+.container{
+ text-align:center;
+ z-index:1;
+ position:relative;
+ letter-spacing:2px;
+}
 
 .reveal{opacity:0;transform:translateY(8px);animation:upFade 1.2s ease forwards;}
 @keyframes upFade{to{opacity:1;transform:translateY(0);}}
@@ -37,13 +43,27 @@ body{
 .signup-btn:hover{background:rgba(255,255,255,0.15);}
 
 .overlay{
- position:fixed;inset:0;backdrop-filter:blur(6px);
- background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;
+ position:fixed;
+ inset:0;
+ backdrop-filter:blur(6px);
+ background:rgba(0,0,0,0.6);
+ display:none;
+ justify-content:center;
+ align-items:center;
+ z-index:9999;
 }
+
 .signup-box{
- background:rgba(20,20,20,0.8);padding:30px;border:1px solid #333;
- width:300px;text-align:center;border-radius:6px;
+ background:rgba(20,20,20,0.8);
+ padding:30px;
+ border:1px solid #333;
+ width:300px;
+ text-align:center;
+ border-radius:6px;
+ position:relative;
+ z-index:10000;
 }
+
 .signup-box input{
  width:100%;padding:10px;margin-top:12px;background:#111;
  border:1px solid #444;color:white;
