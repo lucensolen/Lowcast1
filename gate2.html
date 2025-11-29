@@ -178,10 +178,7 @@ document.getElementById("submitSignup").addEventListener("click", () => {
 });
 
 // ----------------------------------------------------
-// ENTER DIRECT → patched with stage update
-// ----------------------------------------------------
 document.getElementById("enterDirect").addEventListener("click", () => {
-    localStorage.setItem("lowcast.stage","0.2");
     window.location.href = "gate3.html";
 });
 
@@ -203,13 +200,7 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);
 
-// ----------------------------------------------------
-// ENTER THE CHAMBER → patched with stage update
-// ----------------------------------------------------
-accessBtn.addEventListener("click",()=>{
-    localStorage.setItem("lowcast.stage","0.2");
-    window.location.href="gate3.html";
-});
+accessBtn.addEventListener("click",()=>{window.location.href="gate3.html";});
 </script>
 
 </body>

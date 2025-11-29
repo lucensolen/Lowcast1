@@ -13,25 +13,29 @@
         align-items:center;
         opacity:0;
         animation:fadeIn 1.5s ease forwards;
-        color:#fff;
-        letter-spacing:3px;
-        font-family:'Inter',sans-serif;
-        overflow:hidden;
     }
 
     @keyframes fadeIn { to{ opacity:1; } }
 
     .wrapper {
         text-align:center;
-        z-index:10;
+        color:white;
+        letter-spacing:0.15rem;
     }
 
-    h2 {
-        font-size:1rem;
-        opacity:0.7;
-        margin-bottom:16px;
-        letter-spacing:0.28rem;
-        text-transform:uppercase;
+    .enter-btn {
+        margin-top:30px;
+        padding:12px 32px;
+        border:1px solid white;
+        background:transparent;
+        color:white;
+        letter-spacing:0.2rem;
+        cursor:pointer;
+        transition:0.25s;
+    }
+
+    .enter-btn:hover {
+        background:rgba(255,255,255,0.15);
     }
 
     svg {
@@ -69,20 +73,11 @@
         100% { r:75;  stroke-opacity:0; }
     }
 
-    .enter-btn {
-        margin-top:32px;
-        padding:14px 36px;
-        background:transparent;
-        border:1px solid #fff;
-        color:#fff;
-        font-size:0.9rem;
-        letter-spacing:0.25rem;
-        cursor:pointer;
-        transition:0.25s ease;
-    }
-
-    .enter-btn:hover {
-        background:rgba(255,255,255,0.12);
+    h2 {
+        font-size:1rem;
+        opacity:0.7;
+        margin-bottom:12px;
+        letter-spacing:0.28rem;
     }
 </style>
 </head>
@@ -93,6 +88,7 @@
 
     <h2>FREQUENCY CHECK</h2>
 
+    <!-- Broadcast Pulse Symbol -->
     <svg viewBox="0 0 200 200">
         <line id="beam" x1="100" y1="30" x2="100" y2="170" stroke-width="3" />
         <circle class="wave" cx="100" cy="100" r="5" stroke-width="1.5"/>
@@ -106,16 +102,7 @@
 </div>
 
 <script>
-// --------------------------------------------------------
-// NEW: Mark stage as Gate 0.3
-// --------------------------------------------------------
-localStorage.setItem("lowcast.stage", "0.3");
-
-// --------------------------------------------------------
-// ENTER → move to chamber + mark as chamber stage
-// --------------------------------------------------------
 document.getElementById("enter").addEventListener("click", () => {
-    localStorage.setItem("lowcast.stage", "chamber");
     window.location.href = "chamber.html";
 });
 </script>
