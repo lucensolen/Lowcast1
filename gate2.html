@@ -4,71 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LOWCAST // Gate 0.2</title>
+
 <style>
-    body {
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
+body{
+ margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
+ display:flex;justify-content:center;align-items:center;height:100vh;
+ opacity:0;animation:fadeIn 1.5s ease forwards;
 }
-@keyframes fadeIn {
-    to { opacity: 1; }
+@keyframes fadeIn{to{opacity:1;}}
+
+.beam{
+ position:absolute;width:2px;height:80vh;
+ background:linear-gradient(transparent,rgba(255,255,255,0.6),transparent);
+ opacity:1;
 }
-    body {
-        margin: 0;
-        background: #000;
-        color: #e0e0e0;
-        font-family: 'Inter', sans-serif;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .beam {
-        position: absolute;
-        width: 2px;
-        height: 80vh;
-        background: linear-gradient(transparent, rgba(255,255,255,0.6), transparent);
-        opacity: 1;
-    }
-    .container {
-        position: relative;
-        text-align: center;
-        z-index: 10;
-        letter-spacing: 2px;
-    }
-    h1 { font-size: 2.8rem; margin-bottom: 10px; }
-    .subline { font-size: 1.1rem; opacity: 0.8; margin-bottom: 40px; }
-    .info-block { margin-top: 25px; margin-bottom: 40px; line-height: 1.8rem; font-size: 1.1rem;}
-    .countdown {
-        font-size: 2.2rem;
-        margin-top: 20px;
-        margin-bottom: 40px;
-        font-weight: bold;
-    }
-    .access-btn {
-        padding: 14px 36px;
-        font-size: 1rem;
-        letter-spacing: 2px;
-        background: transparent;
-        border: 1px solid #fff;
-        color: #fff;
-        cursor: pointer;
-    }
-    .access-btn:hover { background: rgba(255,255,255,0.12); }
-    .footnote {
-        position: absolute;
-        bottom: 6%;
-        font-size: 0.8rem;
-        opacity: 0.6;
-        letter-spacing: 1px;
-        width: 100%;
-        text-align: center;
-    }
-    <h1 class="reveal delay1">LOWCAST 001</h1>
-<div class="subline reveal delay2">CHELTENHAM // 2025</div>
-<div class="info-block reveal delay3">…</div>
-<div class="countdown reveal delay3" id="countdown">…</div>
-<button class="access-btn reveal delay4">ENTER THE CHAMBER</button>
+
+.container{text-align:center;z-index:10;letter-spacing:2px;}
+
+.reveal{opacity:0;transform:translateY(8px);animation:upFade 1.2s ease forwards;}
+@keyframes upFade{to{opacity:1;transform:translateY(0);}}
+.delay1{animation-delay:0.3s;} .delay2{animation-delay:0.6s;}
+.delay3{animation-delay:0.9s;} .delay4{animation-delay:1.2s;}
+
+.info-block span{
+ filter:blur(3px);
+}
+
+.signup-btn{
+ margin-top:10px;padding:8px 20px;border:1px solid #fff;
+ background:transparent;color:#fff;cursor:pointer;letter-spacing:2px;
+}
+.signup-btn:hover{background:rgba(255,255,255,0.15);}
+
+.overlay{
+ position:fixed;inset:0;backdrop-filter:blur(6px);
+ background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;
+}
+.signup-box{
+ background:rgba(20,20,20,0.8);padding:30px;border:1px solid #333;
+ width:300px;text-align:center;border-radius:6px;
+}
+.signup-box input{
+ width:100%;padding:10px;margin-top:12px;background:#111;
+ border:1px solid #444;color:white;
+}
+.signup-box button{
+ margin-top:18px;width:100%;padding:12px;background:#fff;color:#000;
+ border:none;font-weight:bold;cursor:pointer;
+}
+.close{margin-top:12px;color:#aaa;cursor:pointer;}
+
+.countdown{font-size:2.2rem;margin:25px 0;font-weight:bold;}
+
+.access-btn{
+ padding:14px 36px;font-size:1rem;letter-spacing:2px;
+ background:transparent;border:1px solid #fff;color:#fff;cursor:pointer;
+}
+.access-btn:hover{background:rgba(255,255,255,0.12);}
 </style>
 </head>
 
@@ -77,56 +69,50 @@
 <div class="beam"></div>
 
 <div class="container">
-    <h1>LOWCAST 001</h1>
-    <div class="subline">CHELTENHAM // 2025</div>
+    <h1 class="reveal delay1">LOWCAST 001</h1>
+    <div class="subline reveal delay2">CHELTENHAM // 2025</div>
 
-    <div class="info-block">
+    <div class="info-block reveal delay3">
         <strong>VENUE:</strong> <span>[VENUE NAME HERE]</span><br>
         <strong>DATE:</strong> <span>[DATE HERE]</span><br>
         <strong>TIME:</strong> <span>[TIME RANGE HERE]</span><br>
     </div>
 
-    <div class="countdown" id="countdown">00 : 00 : 00 : 00</div>
+    <button class="signup-btn reveal delay3" id="openSignup">GET NOTIFIED</button>
 
-    <button class="access-btn" id="accessBtn">ENTER THE CHAMBER</button>
+    <div class="countdown reveal delay3" id="countdown">00 : 00 : 00 : 00</div>
+
+    <button class="access-btn reveal delay4" id="accessBtn">ENTER THE CHAMBER</button>
 </div>
 
-<div class="footnote">TRANSMISSION LOCKED</div>
+<div class="overlay" id="overlay">
+    <div class="signup-box">
+        <h2>TUNE IN</h2>
+        <p>Get updates.</p>
+        <input type="email" placeholder="Email address">
+        <input type="text" placeholder="Phone (optional)">
+        <button>SUBMIT</button>
+        <div class="close" id="closeOverlay">Close</div>
+    </div>
+</div>
 
 <script>
-    .reveal {
-    opacity: 0;
-    transform: translateY(8px);
-    animation: upFade 1.2s ease forwards;
-}
-.reveal.delay1 { animation-delay: 0.3s; }
-.reveal.delay2 { animation-delay: 0.6s; }
-.reveal.delay3 { animation-delay: 0.9s; }
-.reveal.delay4 { animation-delay: 1.2s; }
-
-@keyframes upFade {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    }
 const launchDate=new Date("2025-12-30T22:00:00").getTime();
 function updateCountdown(){
-    const now=new Date().getTime();
-    const dist=launchDate-now;
-    if(dist<0){document.getElementById("countdown").innerHTML="00 : 00 : 00 : 00";return;}
-    const d=Math.floor(dist/(1000*60*60*24));
-    const h=Math.floor((dist%(1000*60*60*24))/(1000*60*60));
-    const m=Math.floor((dist%(1000*60*60))/(1000*60));
-    const s=Math.floor((dist%(1000*60))/1000);
-    document.getElementById("countdown").innerHTML=
-        `${String(d).padStart(2,'0')} : ${String(h).padStart(2,'0')} : ${String(m).padStart(2,'0')} : ${String(s).padStart(2,'0')}`;
+ const now=new Date().getTime();
+ const dist=launchDate-now;
+ if(dist<0){countdown.innerHTML="00 : 00 : 00 : 00";return;}
+ const d=Math.floor(dist/(1000*60*60*24));
+ const h=Math.floor((dist%(1000*60*60*24))/(1000*60*60));
+ const m=Math.floor((dist%(1000*60*60))/(1000*60));
+ const s=Math.floor((dist%(1000*60))/1000);
+ countdown.innerHTML=`${String(d).padStart(2,'0')} : ${String(h).padStart(2,'0')} : ${String(m).padStart(2,'0')} : ${String(s).padStart(2,'0')}`;
 }
 setInterval(updateCountdown,1000);
 
-document.getElementById("accessBtn").addEventListener("click",()=>{
-    window.location.href="chamber.html";
-});
+accessBtn.addEventListener("click",()=>{window.location.href="chamber.html";});
+openSignup.addEventListener("click",()=>{overlay.style.display="flex";});
+closeOverlay.addEventListener("click",()=>{overlay.style.display="none";});
 </script>
 
 </body>
