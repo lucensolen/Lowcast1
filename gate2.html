@@ -6,7 +6,6 @@
 <title>LOWCAST // Gate 0.2</title>
 
 <style>
-
 body{
  margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
  display:flex;justify-content:center;align-items:center;height:100vh;
@@ -39,31 +38,27 @@ body{
 .signup-btn{
  margin-top:10px;padding:8px 20px;border:1px solid #fff;
  background:transparent;color:#fff;cursor:pointer;letter-spacing:2px;
+ transition:0.2s ease;
 }
 .signup-btn:hover{background:rgba(255,255,255,0.15);}
 
-.overlay{
- position:fixed;
- inset:0;
- backdrop-filter:blur(6px);
- background:rgba(0,0,0,0.6);
- display:none;
- justify-content:center;
- align-items:center;
- z-index:9999;
+.locked {
+    border-color: #ff1433 !important;
+    color: #ff1433 !important;
+    pointer-events: none;
 }
 
+.overlay{
+ position:fixed;inset:0;backdrop-filter:blur(6px);
+ background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;
+ z-index:9999;
+}
 .signup-box{
- background:rgba(20,20,20,0.8);
- padding:30px;
- border:1px solid #333;
- width:300px;
- text-align:center;
- border-radius:6px;
+ background:rgba(20,20,20,0.8);padding:30px;border:1px solid #333;
+ width:300px;text-align:center;border-radius:6px;
  position:relative;
  z-index:10000;
 }
-
 .signup-box input{
  width:100%;padding:10px;margin-top:12px;background:#111;
  border:1px solid #444;color:white;
@@ -73,6 +68,18 @@ body{
  border:none;font-weight:bold;cursor:pointer;
 }
 .close{margin-top:12px;color:#aaa;cursor:pointer;}
+
+@keyframes redPulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+.success-pulse {
+    color: #ff1433;
+    letter-spacing: 3px;
+    margin-top: 16px;
+    animation: redPulse 2s infinite ease-in-out;
+}
 
 .countdown{font-size:2.2rem;margin:25px 0;font-weight:bold;}
 
@@ -107,16 +114,58 @@ body{
 
 <div class="overlay" id="overlay">
     <div class="signup-box">
-        <h2>TUNE IN</h2>
-        <p>Get updates.</p>
-        <input type="email" placeholder="Email address">
-        <input type="text" placeholder="Phone (optional)">
-        <button>SUBMIT</button>
+        <h2 id="signupTitle">TUNE IN</h2>
+        <p id="signupText">Get updates.</p>
+
+        <div id="signupFields">
+            <input type="email" id="emailInput" placeholder="Email address">
+            <input type="text" id="phoneInput" placeholder="Phone (optional)">
+            <button id="submitSignup">SUBMIT</button>
+        </div>
+
+        <div id="successMessage" style="display:none; text-align:center;">
+            <div class="success-pulse">LOCKED IN</div>
+            <button id="enterDirect" style="margin-top:20px;width:100%;padding:12px;background:#ff1433;color:#000;border:none;font-weight:bold;cursor:pointer;">
+                ENTER CHAMBER
+            </button>
+        </div>
+
         <div class="close" id="closeOverlay">Close</div>
     </div>
 </div>
 
 <script>
+// ------------------ RESTORE LOCKED STATE ------------------
+const notifBtn = document.getElementById("openSignup");
+
+if (localStorage.getItem("lowcast.notified") === "true") {
+    notifBtn.textContent = "LOCKED IN";
+    notifBtn.classList.add("locked");
+}
+
+// ------------------ SUBMISSION HANDLER ------------------
+document.getElementById("submitSignup").addEventListener("click", () => {
+    localStorage.setItem("lowcast.notified", "true");
+
+    document.getElementById("signupFields").style.display = "none";
+    document.getElementById("signupTitle").textContent = "TUNED";
+    document.getElementById("signupText").textContent = "";
+    document.getElementById("successMessage").style.display = "block";
+
+    notifBtn.textContent = "LOCKED IN";
+    notifBtn.classList.add("locked");
+});
+
+// ------------------ ENTER DIRECT ------------------
+document.getElementById("enterDirect").addEventListener("click", () => {
+    window.location.href = "chamber.html";
+});
+
+// ------------------ OPEN/CLOSE OVERLAY ------------------
+openSignup.addEventListener("click",()=>{overlay.style.display="flex";});
+closeOverlay.addEventListener("click",()=>{overlay.style.display="none";});
+
+// ------------------ COUNTDOWN ------------------
 const launchDate=new Date("2025-12-30T22:00:00").getTime();
 function updateCountdown(){
  const now=new Date().getTime();
@@ -130,9 +179,8 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);
 
+// ------------------ ACCESS BUTTON ------------------
 accessBtn.addEventListener("click",()=>{window.location.href="chamber.html";});
-openSignup.addEventListener("click",()=>{overlay.style.display="flex";});
-closeOverlay.addEventListener("click",()=>{overlay.style.display="none";});
 </script>
 
 </body>
