@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOWCAST // Artist Transmission</title>
+
+<style>
+body{
+ margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
+ display:flex;justify-content:center;align-items:center;height:100vh;
+ opacity:0;animation:fadeIn 1.5s ease forwards;
+ overflow:hidden;
+ letter-spacing:3px;
+}
+@keyframes fadeIn{to{opacity:1;}}
+
+.beam{
+ position:absolute;width:2px;height:80vh;
+ background:linear-gradient(transparent,rgba(255,255,255,0.7),transparent);
+ opacity:0;animation:beamFade 1.8s ease forwards;
+}
+@keyframes beamFade{to{opacity:1;}}
+
+.container{
+ text-align:center;
+ z-index:1;
+ position:relative;
+ opacity:0;
+ transform:translateY(10px);
+ animation:rise 1.5s ease forwards;
+ animation-delay:0.5s;
+}
+@keyframes rise{to{opacity:1;transform:translateY(0);}}
+
+/* Title */
+h1{
+ font-size:1.9rem;
+ letter-spacing:0.28rem;
+ margin-bottom:8px;
+ text-transform:uppercase;
+}
+
+/* Subtitle */
+.subtitle{
+ font-size:0.8rem;
+ opacity:0.55;
+ letter-spacing:0.22rem;
+ margin-bottom:20px;
+ text-transform:uppercase;
+}
+
+/* Criteria */
+.criteria{
+ font-size:0.75rem;
+ opacity:0.55;
+ line-height:1.6;
+ margin-bottom:28px;
+}
+
+/* Input fields */
+.input-box{
+ margin-bottom:16px;
+}
+.input-box input{
+ padding:12px 16px;
+ width:270px;
+ background:#111;
+ border:1px solid #444;
+ color:#fff;
+ font-size:0.9rem;
+ letter-spacing:2px;
+ text-align:center;
+}
+.input-box input::placeholder{
+ color:#666;
+ letter-spacing:2px;
+}
+
+/* Button */
+.submit-btn{
+ margin-top:10px;
+ padding:12px 34px;
+ background:transparent;
+ border:1px solid #fff;
+ color:#fff;
+ letter-spacing:0.28rem;
+ cursor:pointer;
+ font-size:0.85rem;
+}
+.submit-btn:hover{
+ background:rgba(255,255,255,0.12);
+}
+
+/* Success Pulse */
+@keyframes redPulse{
+ 0%{opacity:0.4;}
+ 50%{opacity:1;}
+ 100%{opacity:0.4;}
+}
+.success{
+ display:none;
+ color:#ff1433;
+ font-size:1.3rem;
+ margin-top:26px;
+ letter-spacing:4px;
+ animation:redPulse 2s infinite ease-in-out;
+}
+
+/* Back button */
+.back-btn{
+ margin-top:34px;
+ color:#fff;
+ cursor:pointer;
+ font-size:0.85rem;
+ opacity:0.7;
+}
+.back-btn:hover{opacity:1;}
+</style>
+</head>
+
+<body>
+
+<div class="beam"></div>
+
+<div class="container">
+    <h1>TRANSMISSION LINE</h1>
+    <div class="subtitle">ARTIST CALLSIGN // LOWCAST 001</div>
+
+    <div class="criteria">
+        FREQUENCY FIT: TECH / DEEP / MINIMAL / UNDERGROUND<br>
+        ENERGY: CONTROLLED — HEAVY — PRECISE<br>
+        PRESENCE: NO EGO — ONLY SIGNAL
+    </div>
+
+    <div class="input-box">
+        <input type="text" id="callsign" placeholder="CALLSIGN">
+    </div>
+
+    <div class="input-box">
+        <input type="text" id="handle" placeholder="HANDLE / IG">
+    </div>
+
+    <div class="input-box">
+        <input type="text" id="mixlink" placeholder="MIX / LIVE LINK">
+    </div>
+
+    <div class="input-box">
+        <input type="text" id="note" placeholder="ONE LINE (OPTIONAL)">
+    </div>
+
+    <button class="submit-btn" id="submitArtist">TRANSMIT</button>
+
+    <div class="success" id="successPulse">TRANSMISSION RECEIVED</div>
+
+    <div class="back-btn" onclick="window.location.href='index.html'">
+        RETURN TO GATE
+    </div>
+</div>
+
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
+
+document.getElementById("submitArtist").addEventListener("click", () => {
+
+    const callsign = document.getElementById("callsign").value.trim();
+    const handle   = document.getElementById("handle").value.trim();
+    const mixlink  = document.getElementById("mixlink").value.trim();
+    const note     = document.getElementById("note").value.trim();
+
+    if(!callsign || !handle || !mixlink){
+        return;
+    }
+
+    fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: "",
+            phone: handle,
+            callsign: callsign.toUpperCase(),
+            mix: mixlink,
+            note: note,
+            gate: "ArtistCallout"
+        })
+    });
+
+    document.getElementById("successPulse").style.display = "block";
+});
+</script>
+
+</body>
+</html>
