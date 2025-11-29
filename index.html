@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOWCAST // Gate 0.1</title>
+<style>
+    body {
+        margin: 0;
+        background: #000;
+        color: #e0e0e0;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .beam {
+        position: absolute;
+        width: 2px;
+        height: 80vh;
+        background: linear-gradient(transparent, rgba(255,255,255,0.6), transparent);
+        opacity: 0;
+        transition: opacity 1.5s ease;
+    }
+    .message {
+        position: absolute;
+        text-align: center;
+        letter-spacing: 3px;
+        font-size: 1.1rem;
+        opacity: 0;
+        transition: opacity 1.5s ease;
+    }
+    #msg1 { top: 35%; }
+    #msg2 { top: 60%; }
+    .tune-btn {
+        position: absolute;
+        bottom: 12%;
+        padding: 14px 32px;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        background: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 1.5s ease;
+    }
+    .tune-btn:hover {
+        background: rgba(255,255,255,0.15);
+    }
+    .overlay {
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(6px);
+        background: rgba(0,0,0,0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .signup-box {
+        background: rgba(20,20,20,0.8);
+        padding: 30px;
+        border: 1px solid #333;
+        width: 300px;
+        text-align: center;
+        border-radius: 6px;
+    }
+    .signup-box input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 12px;
+        background: #111;
+        border: 1px solid #444;
+        color: white;
+    }
+    .signup-box button {
+        margin-top: 18px;
+        width: 100%;
+        padding: 12px;
+        background: #fff;
+        color: #000;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close {
+        margin-top: 12px;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+</style>
+</head>
+<body>
+
+<div class="beam" id="beam"></div>
+<div class="message" id="msg1">SIGNAL ESTABLISHING...</div>
+<div class="message" id="msg2">STAND BY.</div>
+
+<button class="tune-btn" id="tuneBtn">TUNE IN</button>
+
+<div class="overlay" id="overlay">
+    <div class="signup-box">
+        <h2>TUNE IN</h2>
+        <p>Get notified when Gate 0.2 opens.</p>
+        <input type="email" placeholder="Email address">
+        <input type="text" placeholder="Phone (optional)">
+        <button>SUBMIT</button>
+        <div class="close" id="closeOverlay">Close</div>
+    </div>
+</div>
+
+<script>
+    setTimeout(()=>{document.getElementById("beam").style.opacity=1;},500);
+    setTimeout(()=>{document.getElementById("msg1").style.opacity=1;},1500);
+    setTimeout(()=>{document.getElementById("msg2").style.opacity=1;},3500);
+    setTimeout(()=>{document.getElementById("tuneBtn").style.opacity=1;},5500);
+
+    document.getElementById("tuneBtn").addEventListener("click",()=>{
+        document.getElementById("overlay").style.display="flex";
+    });
+    document.getElementById("closeOverlay").addEventListener("click",()=>{
+        document.getElementById("overlay").style.display="none";
+    });
+
+    // Redirect Gate 0.2 manually for now
+    document.querySelector(".signup-box button").addEventListener("click",()=>{
+        window.location.href="gate2.html";
+    });
+</script>
+
+</body>
+</html>

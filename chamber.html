@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOWCAST // Chamber 0.3</title>
+<style>
+    :root { --red:#ff1433; }
+    body {
+        margin:0; height:100vh; background:#000; color:#f5f5f5;
+        font-family:'Inter',sans-serif; display:flex; justify-content:center;
+        align-items:center; overflow:hidden;
+    }
+    .core {
+        position:absolute; width:260px; height:260px;
+        background:radial-gradient(circle,rgba(255,20,51,0.4)0%,transparent 60%);
+        filter:blur(8px); animation:pulse 4s ease-in-out infinite; opacity:0.7;
+    }
+    @keyframes pulse{
+        0%{transform:scale(0.9);opacity:0.5;}
+        50%{transform:scale(1.1);opacity:0.9;}
+        100%{transform:scale(0.9);opacity:0.5;}
+    }
+    .beam {
+        position:absolute; width:2px; height:80vh;
+        background:linear-gradient(transparent,rgba(255,255,255,0.4),transparent);
+        opacity:0.7;
+    }
+    .chamber { position:relative; z-index:10; text-align:center; padding:24px;
+        background:radial-gradient(circle at top,rgba(255,255,255,0.04),transparent 60%);
+    }
+    h1{font-size:2.2rem;letter-spacing:0.3rem;margin-bottom:10px;}
+    .tagline{font-size:0.9rem;letter-spacing:0.25rem;text-transform:uppercase;opacity:0.7;margin-bottom:26px;}
+    .subline{font-size:0.9rem;letter-spacing:0.18rem;text-transform:uppercase;opacity:0.7;margin-bottom:18px;}
+    .codeword{font-size:0.9rem;text-transform:uppercase;letter-spacing:0.2rem;color:var(--red);margin-bottom:30px;}
+    .field-label{font-size:0.8rem;letter-spacing:0.18rem;text-transform:uppercase;opacity:0.7;margin-bottom:6px;}
+    .handle-input{
+        width:220px;padding:10px 12px;border-radius:4px;background:#050505;border:1px solid #333;
+        color:#f5f5f5;text-align:center;letter-spacing:0.1rem;
+    }
+    .handle-input::placeholder{color:#555;}
+    .enter-btn{
+        margin-top:18px;padding:12px 30px;border:1px solid #f5f5f5;
+        background:transparent;color:#f5f5f5;letter-spacing:0.25rem;
+        font-size:0.8rem;text-transform:uppercase;cursor:pointer;
+    }
+    .enter-btn:hover{background:#f5f5f5;color:#000;}
+    .status{margin-top:18px;font-size:0.8rem;letter-spacing:0.16rem;text-transform:uppercase;opacity:0.75;}
+    .status span{color:var(--red);}
+    .back-link{
+        margin-top:26px;font-size:0.75rem;letter-spacing:0.16rem;
+        text-transform:uppercase;opacity:0.6;cursor:pointer;text-decoration:underline;
+    }
+</style>
+</head>
+<body>
+
+<div class="core"></div>
+<div class="beam"></div>
+
+<div class="chamber">
+    <h1>YOU ARE INSIDE</h1>
+    <div class="tagline">LOWCAST // CHAMBER 0.3</div>
+    <div class="subline">CYCLE 001</div>
+    <div class="codeword">CODEWORD: HEAVY · LOW · REAL</div>
+
+    <div class="field-label">CHOOSE YOUR LOWCAST CALLSIGN</div>
+    <input type="text" id="handleInput" class="handle-input" maxlength="18" placeholder="E.G. RIFT / NEON / SHARD">
+
+    <button class="enter-btn" id="enterBtn">ENTER</button>
+
+    <div class="status" id="statusText">AWAITING CALLSIGN...</div>
+
+    <div class="back-link" id="backLink">RETURN TO GATE</div>
+</div>
+
+<script>
+const handleInput=document.getElementById('handleInput');
+const statusText=document.getElementById('statusText');
+const enterBtn=document.getElementById('enterBtn');
+const backLink=document.getElementById('backLink');
+
+const savedHandle=localStorage.getItem('lowcast.handle');
+if(savedHandle){
+    handleInput.value=savedHandle;
+    statusText.innerHTML=`CURRENT HANDLE: <span>${savedHandle}</span>`;
+}
+
+enterBtn.addEventListener('click',()=>{
+    const raw=handleInput.value.trim();
+    if(!raw){statusText.innerHTML='<span>ENTER A HANDLE FIRST.</span>';return;}
+    const handle=raw.toUpperCase();
+    localStorage.setItem('lowcast.handle',handle);
+    statusText.innerHTML=`TRANSMISSION LOCKED // <span>${handle}</span>`;
+});
+handleInput.addEventListener('keyup',(e)=>{if(e.key==='Enter'){enterBtn.click();}});
+
+backLink.addEventListener('click',()=>{window.location.href='gate2.html';});
+</script>
+
+</body>
+</html>
