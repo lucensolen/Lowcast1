@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOWCAST // Redirecting</title>
+
+<style>
+body{
+ margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
+ display:flex;justify-content:center;align-items:center;height:100vh;
+ opacity:0;animation:fadeIn 1.2s ease forwards;
+ letter-spacing:3px;
+ overflow:hidden;
+}
+
+@keyframes fadeIn{to{opacity:1;}}
+
+.message{
+ text-align:center;
+ font-size:1rem;
+ opacity:0.6;
+}
+
+.pulse{
+ margin-top:12px;
+ color:#ff1433;
+ animation:redPulse 2s infinite ease-in-out;
+ letter-spacing:0.25rem;
+}
+
+@keyframes redPulse {
+ 0% { opacity: 0.4; }
+ 50% { opacity: 1; }
+ 100% { opacity: 0.4; }
+}
+
+/* subtle vertical beam */
+.beam{
+ position:absolute;width:2px;height:70vh;
+ background:linear-gradient(transparent,rgba(255,255,255,0.6),transparent);
+ opacity:0;animation:beamFade 1.8s ease forwards;
+}
+@keyframes beamFade{to{opacity:1;}}
+
+</style>
+
+<script>
+// Redirect cleanly after short delay
+setTimeout(()=>{
+   window.location.href = "index.html";
+}, 900);
+</script>
+
+</head>
+<body>
+
+<div class="beam"></div>
+
+<div class="message">
+    REACQUIRING SIGNAL
+    <div class="pulse">STANDBY</div>
+</div>
+
+</body>
+</html>
