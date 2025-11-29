@@ -3,117 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LOWCAST // Chamber 0.3</title>
+<title>LOWCAST // Chamber</title>
+
 <style>
-:root { --red:#ff1433; }
 body{
- margin:0;height:100vh;background:#000;color:#f5f5f5;
- font-family:'Inter',sans-serif;display:flex;justify-content:center;
- align-items:center;overflow:hidden;opacity:0;animation:fadeIn 1.8s ease forwards;
+ margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
+ display:flex;justify-content:center;align-items:center;height:100vh;
+ opacity:0;animation:fadeIn 1.5s ease forwards;
+ overflow:hidden;
 }
 @keyframes fadeIn{to{opacity:1;}}
 
-.core{
- position:absolute;width:260px;height:260px;
- background:radial-gradient(circle,rgba(255,20,51,0.4)0%,transparent 60%);
- filter:blur(8px);animation:pulse 4s ease-in-out infinite;opacity:0.7;
-}
-@keyframes pulse{
- 0%{transform:scale(0.9);opacity:0.5;}
- 50%{transform:scale(1.1);opacity:0.9;}
- 100%{transform:scale(0.9);opacity:0.5;}
-}
-
 .beam{
  position:absolute;width:2px;height:80vh;
- background:linear-gradient(transparent,rgba(255,255,255,0.4),transparent);
- opacity:0;animation:fadeUp 2s ease forwards;
+ background:linear-gradient(transparent,rgba(255,255,255,0.7),transparent);
+ opacity:0;animation:beamFade 1.8s ease forwards;
 }
-@keyframes fadeUp{to{opacity:1;}}
+@keyframes beamFade{to{opacity:1;}}
 
-.chamber{
- position:relative;z-index:10;text-align:center;padding:24px;
- background:radial-gradient(circle at top,rgba(255,255,255,0.04),transparent 60%);
- opacity:0;animation:fadeInChamber 2.5s ease forwards;
+.container{
+ text-align:center;
+ z-index:1;
+ position:relative;
+ letter-spacing:3px;
+ opacity:0;
+ transform:translateY(10px);
+ animation:rise 1.5s ease forwards;
+ animation-delay:0.5s;
 }
-@keyframes fadeInChamber{to{opacity:1;}}
+@keyframes rise{to{opacity:1;transform:translateY(0);}}
 
-h1{font-size:2.2rem;letter-spacing:0.3rem;margin-bottom:10px;}
-.tagline{font-size:0.9rem;letter-spacing:0.25rem;text-transform:uppercase;opacity:0.7;margin-bottom:26px;}
-.subline{font-size:0.9rem;letter-spacing:0.18rem;text-transform:uppercase;opacity:0.7;margin-bottom:18px;}
-.codeword{font-size:0.9rem;text-transform:uppercase;letter-spacing:0.2rem;color:var(--red);margin-bottom:30px;}
-
-.field-label{font-size:0.8rem;letter-spacing:0.18rem;text-transform:uppercase;opacity:0.7;margin-bottom:6px;}
-.handle-input{
- width:220px;padding:10px 12px;border-radius:4px;background:#050505;
- border:1px solid #333;color:#f5f5f5;text-align:center;letter-spacing:0.1rem;
+/* Callsign box */
+.input-box{
+ margin-top:25px;
 }
-.enter-btn{
- margin-top:18px;padding:12px 30px;border:1px solid #f5f5f5;
- background:transparent;color:#f5f5f5;letter-spacing:0.25rem;
- font-size:0.8rem;text-transform:uppercase;cursor:pointer;
+.input-box input{
+ padding:12px 16px;
+ width:260px;
+ background:#111;
+ border:1px solid #444;
+ color:#fff;
+ font-size:1rem;
+ letter-spacing:2px;
+ text-align:center;
 }
-.enter-btn:hover{background:#f5f5f5;color:#000;}
-
-.status{margin-top:18px;font-size:0.8rem;letter-spacing:0.16rem;text-transform:uppercase;opacity:0.75;}
-.status span{color:var(--red);}
-
-.back-link{
- margin-top:26px;font-size:0.75rem;letter-spacing:0.16rem;text-transform:uppercase;
- opacity:0.6;cursor:pointer;text-decoration:underline;
+.submit-btn{
+ margin-top:20px;
+ padding:12px 32px;
+ background:transparent;
+ border:1px solid #fff;
+ color:#fff;
+ letter-spacing:2px;
+ cursor:pointer;
 }
+.submit-btn:hover{background:rgba(255,255,255,0.12);}
+
+/* Success Pulse */
+@keyframes redPulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+.success{
+ display:none;
+ color:#ff1433;
+ font-size:1.3rem;
+ margin-top:25px;
+ letter-spacing:4px;
+ animation:redPulse 2s infinite ease-in-out;
+}
+
+/* Back button */
+.back-btn{
+ margin-top:30px;
+ color:#fff;
+ cursor:pointer;
+ font-size:0.9rem;
+ opacity:0.7;
+}
+.back-btn:hover{opacity:1;}
 </style>
 </head>
+
 <body>
 
-<div class="core"></div>
 <div class="beam"></div>
 
-<div class="chamber">
-    <h1>YOU ARE INSIDE</h1>
-    <div class="tagline">LOWCAST // CHAMBER 0.3</div>
-    <div class="subline">CYCLE 001</div>
-    <div class="codeword">CODEWORD: HEAVY · LOW · REAL</div>
+<div class="container">
+    <h1>THE CHAMBER</h1>
+    <div style="margin-top:12px; font-size:0.9rem; opacity:0.7;">
+        Enter your CALLSIGN
+    </div>
 
-    <div class="field-label">CHOOSE YOUR LOWCAST CALLSIGN</div>
-    <input type="text" id="handleInput" class="handle-input" maxlength="18" placeholder="E.G. RIFT / NEON / SHARD">
+    <div class="input-box">
+        <input type="text" id="callsignInput" placeholder="Your signal name">
+    </div>
 
-    <button class="enter-btn" id="enterBtn">ENTER</button>
+    <button class="submit-btn" id="submitCallsign">TRANSMIT</button>
 
-    <div class="status" id="statusText">AWAITING CALLSIGN...</div>
+    <div class="success" id="successPulse">SIGNAL RECEIVED</div>
 
-    <div class="back-link" id="backLink">RETURN TO GATE</div>
+    <div class="back-btn" id="backHome">BACK TO GATE</div>
 </div>
 
 <script>
-const handleInput=document.getElementById('handleInput');
-const statusText=document.getElementById('statusText');
-const enterBtn=document.getElementById('enterBtn');
-const backLink=document.getElementById('backLink');
+const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
 
-const savedHandle=localStorage.getItem('lowcast.handle');
-if(savedHandle){
-    handleInput.value=savedHandle;
-    statusText.innerHTML=`CURRENT HANDLE: <span>${savedHandle}</span>`;
-}
+// ----------------------------------------------------
+// SUBMIT CALLSIGN → Send to Google Sheets
+// ----------------------------------------------------
+document.getElementById("submitCallsign").addEventListener("click", () => {
+    const callsign = document.getElementById("callsignInput").value.trim();
+    if(!callsign){ return; }
 
-enterBtn.addEventListener('click',()=>{
-    const raw=handleInput.value.trim();
-    if(!raw){
-        statusText.innerHTML='<span>ENTER A HANDLE FIRST.</span>';
-        return;
-    }
-    const handle=raw.toUpperCase();
-    localStorage.setItem('lowcast.handle',handle);
-    statusText.innerHTML=`TRANSMISSION LOCKED // <span>${handle}</span>`;
+    fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: "",
+            phone: "",
+            callsign: callsign,
+            gate: "Chamber"
+        })
+    });
+
+    document.getElementById("successPulse").style.display = "block";
 });
 
-handleInput.addEventListener('keyup',e=>{
-    if(e.key==="Enter") enterBtn.click();
-});
-
-backLink.addEventListener('click',()=>{
-    window.location.href='gate2.html';
+// ----------------------------------------------------
+// BACK
+// ----------------------------------------------------
+document.getElementById("backHome").addEventListener("click", () => {
+    window.location.href = "gate2.html";
 });
 </script>
 
