@@ -6,6 +6,9 @@
 <title>LOWCAST // Chamber</title>
 
 <style>
+/* ------------------------- */
+/* BASE PAGE (YOUR ORIGINAL) */
+/* ------------------------- */
 body{
  margin:0;background:#000;color:#e0e0e0;font-family:'Inter',sans-serif;
  display:flex;justify-content:center;align-items:center;height:100vh;
@@ -14,7 +17,7 @@ body{
 }
 @keyframes fadeIn{to{opacity:1;}}
 
-/* --- RED CORE PULSE RESTORED FROM OLD CHAMBER --- */
+/* RED CORE PULSE */
 .core{
  position:absolute;
  width:260px;height:260px;
@@ -48,7 +51,7 @@ body{
 }
 @keyframes rise{to{opacity:1;transform:translateY(0);}}
 
-/* TITLE — restored brightness + weight */
+/* TITLE */
 h1{
  font-size:2.4rem;
  letter-spacing:0.30rem;
@@ -56,7 +59,6 @@ h1{
  color:#f5f5f5;
 }
 
-/* SUBHEADERS — restored style from original */
 .subtitle{
  font-size:0.85rem;
  opacity:0.55;
@@ -73,7 +75,6 @@ h1{
  text-transform:uppercase;
 }
 
-/* Codewords stay from the new version */
 .codewords{
  color:#ff1433;
  font-size:0.85rem;
@@ -81,7 +82,6 @@ h1{
  margin-bottom:22px;
 }
 
-/* Callsign box */
 .input-box{
  margin-top:10px;
 }
@@ -102,12 +102,11 @@ h1{
  background:transparent;
  border:1px solid #fff;
  color:#fff;
- letter-spacing:0.25rem; /* ENTER spacing */
+ letter-spacing:0.25rem;
  cursor:pointer;
 }
 .submit-btn:hover{background:rgba(255,255,255,0.12);}
 
-/* SUCCESS PULSE */
 @keyframes redPulse {
     0% { opacity: 0.4; }
     50% { opacity: 1; }
@@ -122,7 +121,6 @@ h1{
  animation:redPulse 2s infinite ease-in-out;
 }
 
-/* Saved Callsign */
 .saved{
  color:#ff1433;
  font-size:1.2rem;
@@ -131,7 +129,6 @@ h1{
  display:none;
 }
 
-/* Back button */
 .back-btn{
  margin-top:30px;
  color:#fff;
@@ -140,14 +137,83 @@ h1{
  opacity:0.7;
 }
 .back-btn:hover{opacity:1;}
+
+
+
+/* ---------------------------------------- */
+/* LOWCAST SEAL LOADER OVERLAY (NEW PART)  */
+/* ---------------------------------------- */
+#sealOverlay {
+ position:fixed;
+ inset:0;
+ background:#000;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ z-index:9999;
+ animation:fadeOutSeal 2.5s ease forwards;
+}
+
+@keyframes fadeOutSeal {
+    0%   { opacity:1; }
+    70%  { opacity:1; }
+    100% { opacity:0; pointer-events:none; }
+}
+
+.seal-wrapper { text-align:center; }
+
+#sealPulse svg {
+    width:190px;
+    height:190px;
+    stroke:#ff1133;
+    fill:none;
+}
+
+#sealPulse line {
+    animation: beamSeal 2.8s infinite ease-in-out;
+}
+@keyframes beamSeal {
+    0%{stroke-opacity:0.2;} 
+    40%{stroke-opacity:1;} 
+    100%{stroke-opacity:0.2;}
+}
+
+.seal-wave {
+    stroke-opacity:0.18;
+    animation: waveSeal 2.8s infinite ease-out;
+}
+.seal-wave:nth-child(2){animation-delay:.2s;}
+.seal-wave:nth-child(3){animation-delay:.4s;}
+.seal-wave:nth-child(4){animation-delay:.6s;}
+
+@keyframes waveSeal {
+    0%{r:5; stroke-opacity:0.7;}
+    70%{r:75; stroke-opacity:0.15;}
+    100%{r:75; stroke-opacity:0;}
+}
 </style>
 </head>
 
 <body>
 
-<!-- RED PULSE CORE -->
-<div class="core"></div>
+<!-- NEW: PULSE SEAL LOADER OVERLAY -->
+<div id="sealOverlay">
+ <div class="seal-wrapper" id="sealPulse">
+    <svg viewBox="0 0 200 200">
+        <line x1="100" y1="30" x2="100" y2="170" stroke-width="3" />
+        <circle class="seal-wave" cx="100" cy="100" r="5" stroke-width="1.5"/>
+        <circle class="seal-wave" cx="100" cy="100" r="5" stroke-width="1.5"/>
+        <circle class="seal-wave" cx="100" cy="100" r="5" stroke-width="1.5"/>
+        <circle class="seal-wave" cx="100" cy="100" r="5" stroke-width="1.5"/>
+    </svg>
+ </div>
+</div>
 
+
+
+<!-- YOUR ORIGINAL CHAMBER BELOW (unchanged) -->
+
+<div class="core"></div>
 <div class="beam"></div>
 
 <div class="container">
@@ -159,10 +225,8 @@ h1{
 
     <div class="codewords">HEAVY · BASS · REAL</div>
 
-    <!-- Saved callsign -->
     <div class="saved" id="savedCallsign"></div>
 
-    <!-- Input -->
     <div class="input-box" id="inputBox">
         <input type="text" id="callsignInput" placeholder="Your signal name">
     </div>
@@ -175,6 +239,18 @@ h1{
 </div>
 
 <script>
+/* -------------------------- */
+/* REMOVE SEAL AFTER 2.5s    */
+/* -------------------------- */
+setTimeout(()=>{
+    document.getElementById("sealOverlay").style.display="none";
+}, 2500);
+
+
+/* -------------------------- */
+/* YOUR ORIGINAL JS BELOW     */
+/* -------------------------- */
+
 const API_URL = "https://script.google.com/macros/s/AKfycbzKRWhjDbd5SbQ_2l8flri__AUZ1SkC8IW-sIqBBEjzu9rTd_NLGInFx7XXgxB6YRX2ig/exec";
 
 // LOAD SAVED CALLSIGN IF EXISTS
